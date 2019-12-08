@@ -1,18 +1,16 @@
-package com.example.kshitij.quickpoll.ui.home;
+package com.example.kshitij.quickpoll.ui.survey;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
-
+public class SurveyViewModel extends ViewModel {
+    // TODO: Implement the ViewModel
     private MutableLiveData<String> mText;
-
-    public HomeViewModel() {
+    public SurveyViewModel(){
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is survey fragment");
     }
-
     public LiveData<String> getText() {
         return mText;
     }
