@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "818158492009",
+    "firebase_url": "https://quickpoll-fd995.firebaseio.com",
+    "project_id": "quickpoll-fd995",
+    "storage_bucket": "quickpoll-fd995.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818158492009:android:c0d446d3072df25072c5f8",
+        "android_client_info": {
+          "package_name": "com.example.kshitij.quickpoll"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818158492009-0fhuusnca6a9ecfn1glgai2cnor5dabg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kshitij.quickpoll",
+            "certificate_hash": "042a431c1c1c7ec52c7e4245024a5e09b6c2517c"
+          }
+        },
+        {
+          "client_id": "818158492009-boakv7t9m19kq3smruv3mrft66ctdoto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO1Zb24c8IRWKn1V74ZSa1oNMrNfbxdpE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818158492009-boakv7t9m19kq3smruv3mrft66ctdoto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
