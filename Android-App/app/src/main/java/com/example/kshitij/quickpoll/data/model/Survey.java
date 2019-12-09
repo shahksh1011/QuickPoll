@@ -1,11 +1,12 @@
 package com.example.kshitij.quickpoll.data.model;
 
+import java.io.Serializable;
 import java.lang.reflect.GenericArrayType;
 import java.util.Date;
 import java.util.List;
 
-public class Survey {
-    public String surveyId, createdBy, surveyDescription, surveyName;
+public class Survey implements Serializable {
+    public String surveyId, createdBy, surveyDescription, surveyName, timeToComplete;
     public Date surveyCreated, surveryExpiry;
     public List<?> questions;
 
@@ -17,7 +18,15 @@ public class Survey {
         this.surveyName = surveyName;
     }
 
-    public Survey(String surveyId, String createdBy, String surveyDescription, Date surveyCreated, Date surveryExpiry, List<?> questions, String surveyName) {
+    public String getTimeToComplete() {
+        return timeToComplete;
+    }
+
+    public void setTimeToComplete(String timeToComplete) {
+        this.timeToComplete = timeToComplete;
+    }
+
+    public Survey(String surveyId, String createdBy, String surveyDescription, Date surveyCreated, Date surveryExpiry, List<?> questions, String surveyName, String timeToComplete) {
         this.surveyId = surveyId;
         this.createdBy = createdBy;
         this.surveyDescription = surveyDescription;
@@ -25,6 +34,7 @@ public class Survey {
         this.surveryExpiry = surveryExpiry;
         this.questions = questions;
         this.surveyName = surveyName;
+        this.timeToComplete = timeToComplete;
     }
 
     public List<?> getQuestions() {

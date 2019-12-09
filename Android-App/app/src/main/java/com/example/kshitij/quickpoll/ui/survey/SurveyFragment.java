@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +29,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class SurveyFragment extends Fragment {
+public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFragmentInterface {
 
     private SurveyViewModel surveyViewModel;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -58,16 +59,16 @@ public class SurveyFragment extends Fragment {
                                         document.getDate("surveyCreated"),
                                         document.getDate("surveyExpiry"),
                                         (List<?>) document.get("questions"),
-                                        document.getString("surveyName"));
+                                        document.getString("surveyName"),
+                                        document.getString("timeToComplete"));
                                 list.add(survey);
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                             Log.d(TAG, "List Size" + list.size());
                             recyclerView = root.findViewById(R.id.recyvlerview_surveys);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                            surveyAdapter = new SurveyAdapter(getContext(), list);
+                            surveyAdapter = new SurveyAdapter(getContext(), list, SurveyFragment.this, root);
                             recyclerView.setAdapter(surveyAdapter);
-                            //surveyAdapter.notifyDataSetChanged();
 
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -84,8 +85,10 @@ public class SurveyFragment extends Fragment {
         return root;
     }
 
-    public void getData(){
-
+    @Override
+    public void onSurveyClick(Survey survey, View view) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("survey", survey);
+        Navigation.findNavController(view).navigate(R.id.surveyDescriptionFragment,bundle);
     }
-
 }

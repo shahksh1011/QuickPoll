@@ -24,4 +24,16 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="description">"Description :"</string>
+    <string name="timeToComplete">"Time to Complete :"</string>
+    <string name="surveyDescription">"Survey Description"</string>
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Survey Variables -->
+
+    <!-- End of Survey Variables -->
 </resources>
