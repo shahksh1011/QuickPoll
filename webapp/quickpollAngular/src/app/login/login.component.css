@@ -28,5 +28,8 @@ mat-card-content {
 
 .button {
   display: flex;
-  justify-content: flex-end;
+}
+
+.registerLink{
+  margin: 15px 0 0;
 }
