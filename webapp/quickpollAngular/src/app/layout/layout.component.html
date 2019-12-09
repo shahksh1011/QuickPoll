@@ -1,0 +1,11 @@
+<div class="main">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span><a href="/">Quick Poll</a></span>
+      <span class="spacer"></span>
+      <a mat-button href="/user" class="user-name">Welcome, {{user.email}}</a>
+      <a mat-button [routerLink]="" (click)="logout()">Logout</a>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
+</div>

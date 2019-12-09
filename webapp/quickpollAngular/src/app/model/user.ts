@@ -1,18 +1,10 @@
 export class User {
-  guid: string;
-  customerUid: string;
-
+  id: bigint;
+  email: string;
+  password: string;
   firstName: string;
   lastName: string;
-
-  email: string;
-  zipCode: string;
-
-  password: string;
-
-  constructor(obj: any = null) {
-    if (obj != null) {
-      Object.assign(this, obj);
-    }
-  }
+  active: bigint;
+  phoneNumber: string;
+  token?: string;
 }

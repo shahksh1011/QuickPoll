@@ -2,9 +2,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var users = require('./routes/users');
-
+const dotenv = require('dotenv');
+dotenv.config();
+const users = require('./routes/userRoutes');
+const auth = require('./routes/authRoutes');
+const admin = require('./firebase-admin/admin');
 var app = express();
 
 app.use(bodyParser.json());
@@ -18,5 +20,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api/v1/users', users);
+app.use('/auth',auth);
+
 
 module.exports = app;
