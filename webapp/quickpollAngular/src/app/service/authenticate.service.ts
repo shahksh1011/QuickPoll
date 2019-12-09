@@ -27,9 +27,8 @@ export class AuthenticateService {
       .pipe(map((response: any) => {
       // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
       console.log(response);
-      response.data.user.token = response.data.token;
-      localStorage.setItem('currentUser', JSON.stringify(response.data.user));
-      this.currentUserSubject.next(response.data.user);
+      localStorage.setItem('currentUser', JSON.stringify(response.user));
+      this.currentUserSubject.next(response.user);
       return response.user;
     }));
   }
@@ -39,5 +38,16 @@ export class AuthenticateService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']);
+  }
+
+  createNewUser(user: User) {
+    return this.http.post( 'http://localhost:3000/auth/register', {user})
+      .pipe(map((response: any) => {
+        // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
+        console.log(response);
+        localStorage.setItem('currentUser', JSON.stringify(response.user));
+        this.currentUserSubject.next(response.user);
+        return response.user;
+      }));
   }
 }

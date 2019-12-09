@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import {User} from '../model/user';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AuthenticateService} from '../service/authenticate.service';
+import {PasswordMatch} from '../helpers/password-match.validator';
 
 @Component({
   selector: 'app-register',
@@ -8,52 +12,48 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 })
 export class RegisterComponent implements OnInit {
 
-  registered = false;
+  signUpForm: FormGroup;
+  user: User;
   submitted = false;
-  userForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
-
-  }
-
-  invalidFirstName() {
-    return (this.submitted && this.userForm.controls.first_name.errors != null);
-  }
-
-  invalidLastName() {
-    return (this.submitted && this.userForm.controls.last_name.errors != null);
-  }
-
-  invalidEmail() {
-    return (this.submitted && this.userForm.controls.email.errors != null);
-  }
-
-  invalidZipcode() {
-    return (this.submitted && this.userForm.controls.zipcode.errors != null);
-  }
-
-  invalidPassword() {
-    return (this.submitted && this.userForm.controls.password.errors != null);
-  }
-
-  ngOnInit() {
-    this.userForm = this.formBuilder.group({
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      zipcode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]],
-      password: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]],
-    });
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private authenticateService: AuthenticateService) {
+    this.user = new User();
   }
 
   onSubmit() {
     this.submitted = true;
-
-    if (this.userForm.invalid === true) {
+    if (this.signUpForm.invalid) {
       return;
     } else {
-      this.registered = true;
+      this.user.firstName = this.signUpForm.controls.firstName.value;
+      this.user.lastName = this.signUpForm.controls.lastName.value;
+      this.user.email = this.signUpForm.controls.email.value;
+      this.user.phoneNumber = this.signUpForm.controls.phone.value;
+      this.user.password = this.signUpForm.controls.password.value;
+      this.authenticateService.createNewUser(this.user).subscribe(result => this.goHome());
     }
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
+  }
+
+  ngOnInit() {
+    this.signUpForm = this.formBuilder.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.required, Validators.pattern('[0-9]+'), Validators.maxLength(10), Validators.minLength(10)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validator: PasswordMatch('password', 'confirmPassword')
+    });
+  }
+
+  get f() {
+    return this.signUpForm.controls;
   }
 
 }

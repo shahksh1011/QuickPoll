@@ -3,7 +3,8 @@ var router = express.Router();
 const admin = require('../firebase-admin/admin');
 const FirebaseAuth = require('firebaseauth'); // or import FirebaseAuth from 'firebaseauth';
 const firebase = new FirebaseAuth(process.env.FIREBASE_API_KEY);
-
+const db = admin.firestore();
+let docRef = db.collection('users');
 /* GET users listing. */
 router.post('/login', function (req, res) {
   var email = req.body.email;
@@ -17,19 +18,42 @@ router.post('/login', function (req, res) {
     }
     else {
       console.log(result);
-      res.send(200, { data: result });
+      let docLink = docRef.doc(result.user.id);
+      let getDoc = docLink.get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log('No such document!');
+          } else {
+            console.log('Document data:', doc.data());
+            var user = doc.data().user;
+            user.token = result.token;
+            res.send(200, { user: user });
+          }
+        })
+        .catch(err => {
+          console.log('Error getting document', err);
+        });
     }
   });
 });
 
 router.post('/register', function (req, res) {
-
-  firebase.registerWithEmail(email, password, name, function (err, result) {
-    if (err){
+  var user = req.body.user;
+  console.log(user);
+  firebase.registerWithEmail(user.email, user.password, user.firstName + ' ' + user.lastName, async function (err, result) {
+    if (err) {
       console.log(err);
     }
-    else{
+    else {
       console.log(result);
+      user.id = result.user.id;
+      user.password = null;
+      user.displayName = result.user.displayName;
+      let doc = docRef.doc(user.id);
+      let userDoc = await doc.set({ user });
+      console.log(userDoc);
+      user.token = result.token;
+      res.send(200, { user: user });
     }
   });
 });
