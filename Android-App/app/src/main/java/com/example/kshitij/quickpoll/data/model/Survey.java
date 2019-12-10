@@ -41,7 +41,7 @@ public class Survey implements Serializable {
         return questions;
     }
 
-    public void setQuestions(List<?> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 

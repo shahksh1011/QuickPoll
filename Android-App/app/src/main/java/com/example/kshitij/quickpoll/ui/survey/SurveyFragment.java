@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.kshitij.quickpoll.R;
 import com.example.kshitij.quickpoll.adapters.SurveyAdapter;
+import com.example.kshitij.quickpoll.data.model.Question;
 import com.example.kshitij.quickpoll.data.model.Survey;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

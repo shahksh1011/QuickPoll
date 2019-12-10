@@ -33,6 +33,8 @@
     <string name="description">"Description :"</string>
     <string name="timeToComplete">"Time to Complete :"</string>
     <string name="surveyDescription">"Survey Description"</string>
+    <string name="Questions">"Questions"</string>
+    <string name="next">"Next"</string>
 
 
 

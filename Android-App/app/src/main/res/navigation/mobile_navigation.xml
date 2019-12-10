@@ -36,7 +36,16 @@
         android:id="@+id/surveyDescriptionFragment"
         android:name="com.example.kshitij.quickpoll.ui.surveyCycle.SurveyDescriptionFragment"
         android:label="@string/surveyDescription"
-        tools:layout="@layout/survey_description_fragment" />
+        tools:layout="@layout/survey_description_fragment" >
+        <action
+            android:id="@+id/action_surveyDescriptionFragment_to_surveyQuestionsFragment"
+            app:destination="@id/surveyQuestionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/surveyQuestionsFragment"
+        android:name="com.example.kshitij.quickpoll.ui.surveyQuestions.SurveyQuestionsFragment"
+        android:label="survey_questions_fragment"
+        tools:layout="@layout/survey_questions_fragment" />
 
 
 </navigation>
