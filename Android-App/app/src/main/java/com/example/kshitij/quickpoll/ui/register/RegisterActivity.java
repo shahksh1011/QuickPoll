@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -50,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
     private static String TAG = "LoginActivity";
     private DatePickerDialog picker;
     private RadioButton radioButtonGender;
+    private LinearLayout loader;
+    private  Button registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +65,18 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText emailEditText = findViewById(R.id.register_email);
         final EditText passwordEditText = findViewById(R.id.register_password);
         final EditText confirmPasswordEditText = findViewById(R.id.register_confirm_password);
-        final Button registerButton = findViewById(R.id.register_btn);
+        registerButton = findViewById(R.id.register_btn);
         final EditText firstNameEditTest = findViewById(R.id.register_first_name);
         final EditText lastNameEditTest = findViewById(R.id.register_last_name);
-        final ProgressBar loadingProgressBar = findViewById(R.id.register_loading);
+        //loadingProgressBar = findViewById(R.id.register_loading);
+        loader = findViewById(R.id.register_header_progress);
         final RadioGroup radioGroupGender = findViewById(R.id.register_genderRadioGroup);
         radioButtonGender = findViewById(radioGroupGender.getCheckedRadioButtonId());
         final EditText dobEditText = findViewById(R.id.register_dob);
 
         dobEditText.setInputType(InputType.TYPE_NULL);
         dobEditText.setOnClickListener(view -> {
+            closeKeyboard();
             final Calendar cldr = Calendar.getInstance();
             int day = cldr.get(Calendar.DAY_OF_MONTH);
             int month = cldr.get(Calendar.MONTH);
@@ -85,7 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
         registerButton.setOnClickListener(view -> {
             closeKeyboard();
-            loadingProgressBar.setVisibility(View.VISIBLE);
+            loader.setVisibility(View.VISIBLE);
+            registerButton.setEnabled(false);
             validateFields(emailEditText.getText().toString(), passwordEditText.getText().toString(), firstNameEditTest.getText().toString(),
                     lastNameEditTest.getText().toString(), confirmPasswordEditText.getText().toString(), dobEditText.getText().toString(),radioButtonGender.getText().toString());
 
@@ -103,21 +110,39 @@ public class RegisterActivity extends AppCompatActivity {
 
     private  boolean validateFields(String email, String password, String firstName, String lastName, String confirmPwd,String dob, String gender) {
         if (Validation.isNullorEmpty(firstName)) {
-            Toast.makeText(this, "First name " + R.string.empty_error, Toast.LENGTH_LONG).show();
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, "First name " + getResources().getString(R.string.empty_error), Toast.LENGTH_LONG).show();
         } else if (Validation.isNullorEmpty(lastName)) {
-            Toast.makeText(this, "Last name " + R.string.empty_error, Toast.LENGTH_LONG).show();
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, "Last name " + getResources().getString(R.string.empty_error), Toast.LENGTH_LONG).show();
         } else if (!isEmailValid(email)) {
-            Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_LONG).show();
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, getResources().getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
         } else if (!isPasswordValid(password, confirmPwd)) {
-            Toast.makeText(this, R.string.invalid_password, Toast.LENGTH_LONG).show();
-        } else if(Validation.isNullorEmpty(dob)){
-            Toast.makeText(this, "DOB " + R.string.empty_error, Toast.LENGTH_LONG).show();
-        } else{
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, getResources().getString(R.string.invalid_password), Toast.LENGTH_LONG).show();
+        } else if(!password.equals(confirmPwd)){
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, getResources().getString(R.string.invalid_confirm_password), Toast.LENGTH_LONG).show();
+        }else if(Validation.isNullorEmpty(dob)){
+            loader.setVisibility(View.GONE);
+            registerButton.setEnabled(true);
+            Toast.makeText(this, "DOB " + getResources().getString(R.string.empty_error), Toast.LENGTH_LONG).show();
+        } else {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "createUserWithEmail:success");
                     String id = mAuth.getCurrentUser().getUid();
                     LoggedInUser userObj = new LoggedInUser(id, firstName, lastName, email, dob, gender);
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(userObj.getDisplayName()).build();
+
+                    FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdates);
                     Map<String, Object> user = new HashMap<>();
                     user.put(Constants.FIRST_NAME, userObj.getFirstName());
                     user.put(Constants.LAST_NAME, userObj.getLastName());
@@ -131,14 +156,20 @@ public class RegisterActivity extends AppCompatActivity {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
                                 startActivity(intent);
                                 finish();
+                                loader.setVisibility(View.GONE);
+                                registerButton.setEnabled(true);
                             }).addOnFailureListener(e -> {
                         Log.w(TAG, "Error writing document", e);
                     });
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Authentication failed." + task.getException().getMessage(),
+                            Toast.LENGTH_LONG).show();
+                    loader.setVisibility(View.GONE);
+                    registerButton.setEnabled(true);
+                    //loadingProgressBar.setVisibility(View.GONE);
                 }
+
             });
         }
         return true;
@@ -152,9 +183,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private boolean isPasswordValid(String password, String confirmPwd) {
         if(Validation.isNullorEmpty(password) || Validation.isNullorEmpty(confirmPwd)){
-            return false;
-        }
-        if(!password.equals(confirmPwd)){
             return false;
         }
         return Validation.isPasswordValid(password);

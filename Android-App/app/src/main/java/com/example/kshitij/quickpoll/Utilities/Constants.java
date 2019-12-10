@@ -6,4 +6,7 @@ public class Constants {
     public static final String EMAIL = "email";
     public static final String GENDER = "gender";
     public static final String DOB = "dob";
+    public static final String UNABLE_SEND = "Unable to Send Email";
+    public static final String USER_COLLECTION = "users";
+    public static final String SURVEYS_COLLECTION = "surveys";
 }

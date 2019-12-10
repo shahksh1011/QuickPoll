@@ -29,6 +29,7 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="empty_error">field cannot be empty</string>
     <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_confirm_password">Password do not match</string>
     <string name="login_failed">"Login failed"</string>
     <string name="description">"Description :"</string>
     <string name="timeToComplete">"Time to Complete :"</string>
