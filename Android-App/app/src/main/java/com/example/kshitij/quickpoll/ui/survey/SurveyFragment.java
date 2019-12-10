@@ -19,6 +19,7 @@ import com.example.kshitij.quickpoll.R;
 import com.example.kshitij.quickpoll.adapters.SurveyAdapter;
 import com.example.kshitij.quickpoll.data.model.Question;
 import com.example.kshitij.quickpoll.data.model.Survey;
+import com.example.kshitij.quickpoll.enums.SurveyVariables;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,13 +56,13 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
 //                                Survey survey=new Survey();
 //                                public Survey(String surveyId, String createdBy, String surveyDescription, Date surveyCreated, Date surveryExpiry, List<?> questions, String surveyName)
                                 Survey survey = new Survey(document.getId(),
-                                        document.getString("createdBy"),
-                                        document.getString("surveyDescription"),
-                                        document.getDate("surveyCreated"),
-                                        document.getDate("surveyExpiry"),
-                                        (List<?>) document.get("questions"),
-                                        document.getString("surveyName"),
-                                        document.getString("timeToComplete"));
+                                        document.getString(String.valueOf(SurveyVariables.createdBy)),
+                                        document.getString(String.valueOf(SurveyVariables.description)),
+                                        document.getDate(String.valueOf(SurveyVariables.createdDate)),
+                                        document.getDate(String.valueOf(SurveyVariables.expiry)),
+                                        (List<?>) document.get(String.valueOf(SurveyVariables.questions)),
+                                        document.getString(String.valueOf(SurveyVariables.surveyName)),
+                                        document.getString(String.valueOf(SurveyVariables.timeToComplete)));
                                 list.add(survey);
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
