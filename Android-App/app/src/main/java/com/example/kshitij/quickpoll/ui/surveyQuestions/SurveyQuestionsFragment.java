@@ -17,12 +17,17 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kshitij.quickpoll.R;
 import com.example.kshitij.quickpoll.data.model.Question;
 import com.example.kshitij.quickpoll.data.model.Survey;
 import com.example.kshitij.quickpoll.enums.SurveyVariables;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +37,10 @@ public class SurveyQuestionsFragment extends Fragment {
 
     private static int i = 0, questionLength;
     Map<String, Object> answer = new HashMap<>();
+    FirebaseFirestore db;
 //    private static boolean isAnswered;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
     private Map<String, View> activeMap;
     private static List<?> list;
     private TextView questionText;
@@ -43,7 +51,7 @@ public class SurveyQuestionsFragment extends Fragment {
 
     private TextView textBox;
 
-    private Button nextButton;
+    private Button nextButton, submitButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,6 +59,12 @@ public class SurveyQuestionsFragment extends Fragment {
         View view =inflater.inflate(R.layout.survey_questions_fragment, container, false);
         questionText = view.findViewById(R.id.question_text);
         nextButton = view.findViewById(R.id.button_next);
+        submitButton = view.findViewById(R.id.button_submit);
+        mAuth = FirebaseAuth.getInstance();
+
+        currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        answer = new HashMap<>();
         Bundle bundle = getArguments();
         activeMap = new HashMap<>();
 
@@ -69,21 +83,16 @@ public class SurveyQuestionsFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View activeView = activeMap.get(active);
-                if (activeView == questionText){
-                    if (questionText.getText().toString().isEmpty()){
-                        inputTextBox.setError("Enter Answer");
-                    }else{
-                        changeQuestion();
-                    }
-                }else if (activeView == radioGroup){
-                    if (radioGroup.getCheckedRadioButtonId() == -1){
-                        Snackbar.make(getView(), "Please Select an Option", Snackbar.LENGTH_LONG).isShown();
-                    }else{
-                        changeQuestion();
-                    }
-                }
-//                changeQuestion();
+                checkAnswer(true);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkAnswer(false);
+//                Log.d("Answer Size", String.valueOf(answer.size()));
+                setAnswers(survey);
             }
         });
         return view;
@@ -91,13 +100,44 @@ public class SurveyQuestionsFragment extends Fragment {
 
     public void changeQuestion(){
         if(i<list.size()){
+
             Map<String, ?> hashMap = (Map<String, Object>)list.get(++i);
+
             questionText.setText((String) hashMap.get(String.valueOf(SurveyVariables.name)));
             setInputOption(hashMap);
 //            questionText.setText(list.get(++i).getQuestionText());
         }
-        if(i == list.size()-1)
+        if(i == list.size()-1){
             nextButton.setVisibility(View.INVISIBLE);
+            nextButton.setClickable(false);
+            submitButton.setClickable(true);
+            submitButton.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+    public void checkAnswer(boolean flag){
+        View activeView = activeMap.get(active);
+        if (activeView == inputTextBox){
+            if (inputTextBox.getText().toString().isEmpty()){
+//                        Toast.makeText(getContext(),"Please enter a valid answer", Toast.LENGTH_LONG);
+                inputTextBox.setError("Please Enter a valid answer");
+            }else{
+                answer.put(questionText.getText().toString(), inputTextBox.getText().toString());
+                if (flag)
+                    changeQuestion();
+            }
+        }else if (activeView == radioGroup){
+            if (radioGroup.getCheckedRadioButtonId() == -1){
+                Toast.makeText(getContext(), "Please Select an Option", Toast.LENGTH_LONG).show();
+
+            }else{
+                answer.put(questionText.getText().toString(), radioGroup.getCheckedRadioButtonId());
+                if (flag)
+                    changeQuestion();
+            }
+        }
     }
 
     public void setInputOption(Map<String, ?> hashMap){
@@ -128,5 +168,17 @@ public class SurveyQuestionsFragment extends Fragment {
 
                 break;
         }
+    }
+
+    public void setAnswers(Survey survey){
+        Map<String, Map<String, Object> > userAnswer = new HashMap<>();
+        userAnswer.put(currentUser.getUid(), answer);
+        db.collection("surveyAnswers")
+                .document(survey.getSurveyId())
+                .set(userAnswer, SetOptions.merge());
+//        db.collection("surveyAnswers")
+//                .document(survey.getSurveyId())
+//                .get(currentUser.getUid()).set
+
     }
 }
