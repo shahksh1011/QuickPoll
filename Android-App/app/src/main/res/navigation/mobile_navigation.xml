@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/surveyQuestionsFragment"
         android:name="com.example.kshitij.quickpoll.ui.surveyQuestions.SurveyQuestionsFragment"
-        android:label="survey_questions_fragment"
+        android:label="@string/survey_questions"
         tools:layout="@layout/survey_questions_fragment" />
 
 
