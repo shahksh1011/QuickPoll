@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {Injectable, NgModule} from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -11,9 +10,12 @@ import {CustomMaterialModule} from './core/material.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {AuthenticateService} from './service/authenticate.service';
 import {HTTP_INTERCEPTORS, HttpClientModule, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {catchError} from 'rxjs/operators';
 import {LayoutComponent} from './layout/layout.component';
+import { CreateSurveyComponent } from './create-survey/create-survey.component';
+import { CreatePollComponent } from './create-poll/create-poll.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import {MatDatepickerModule} from '@angular/material';
+import {SurveyService} from './service/survey.service';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -32,7 +34,10 @@ export class XhrInterceptor implements HttpInterceptor {
     LayoutComponent,
     LoginComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    CreateSurveyComponent,
+    CreatePollComponent,
+    MyProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,7 @@ export class XhrInterceptor implements HttpInterceptor {
   ],
   providers: [
     AuthenticateService,
+    SurveyService,
     { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,70 @@
+<div class="container-fluid content">
+  <div class="row">
+    <div class="col-md-6">
+      <h5 class="m-3">Create Survey</h5>
+      <h6 class="m-3">Add a question</h6>
+      <button mat-raised-button color="primary" (click)="showCard('Single')" class="mx-3">Single Choice</button>
+      <button mat-raised-button color="primary" (click)="showCard('Multiple')" class="mx-3">Multiple Choice</button>
+      <button mat-raised-button color="primary" (click)="showCard('Text')" class="mx-3">Text Field</button>
+      <div class="card m-3" *ngIf="displayCard" style="width: 30rem;">
+        <div class="card-body">
+          <h5 class="card-title">{{displayCardData.title}}</h5>
+          <p class="card-text text-muted">{{displayCardData.note}}</p>
+          <form [formGroup]="surveyQuestionForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+              <input type="text" matInput placeholder="Enter your survey question" formControlName="question" required>
+            </mat-form-field>
+            <mat-form-field *ngIf="displayCardData.type!=='Text'">
+              <mat-chip-list #chipList aria-label="Option selection">
+                <mat-chip *ngFor="let option of options" [selectable]="selectable"
+                          [removable]="removable" (removed)="remove(option)">
+                  {{option}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New Option..."
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)">
+              </mat-chip-list>
+            </mat-form-field>
+            <button type="submit" mat-raised-button class="mat-primary">Add</button>
+          </form>
+        </div>
+      </div>
+      <div class="card m-3" *ngIf="questions.length>0 && !displayCard" style="width: 30rem;">
+        <div class="card-body">
+          <h5 class="card-title">Survey Details</h5>
+          <form [formGroup]="surveyDetailsForm" (ngSubmit)="submitDetails()">
+            <mat-form-field>
+              <input type="text" matInput placeholder="Enter Survey Name" formControlName="surveyName" required>
+            </mat-form-field>
+            <mat-form-field>
+              <textarea matInput placeholder="Enter Survey Description" formControlName="surveyDescription" required></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <input type="text" matInput placeholder="Time To Complete" formControlName="surveyTime" required>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" formControlName="surveyExpiryDate" placeholder="Choose Survey Expiry Date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <button type="submit" mat-raised-button class="mat-primary">Create Survey</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h5 class="m-3">Survey Questions</h5>
+      <div class="m-3 row" *ngFor="let ques of questions; let i = index" [attr.data-index]="i">
+        <h6>Question No. {{i + 1}} - {{ques.name}}</h6>
+        <div class="col-md-12">
+          <mat-chip-list>
+            <mat-chip color="primary" *ngFor="let opt of ques.options">{{opt}}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

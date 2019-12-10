@@ -5,6 +5,9 @@ import {RegisterComponent} from './register/register.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {LayoutComponent} from './layout/layout.component';
 import {AuthGuard} from './auth.guard';
+import {CreateSurveyComponent} from './create-survey/create-survey.component';
+import {CreatePollComponent} from './create-poll/create-poll.component';
+import {MyProfileComponent} from './my-profile/my-profile.component';
 
 
 const routes: Routes = [
@@ -13,6 +16,9 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
+      {path: 'create-survey', component: CreateSurveyComponent, canActivate: [AuthGuard]},
+      {path: 'create-poll', component: CreatePollComponent, canActivate: [AuthGuard]},
+      {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthGuard]},
     ]
   },
   {path: 'login', component: LoginComponent},

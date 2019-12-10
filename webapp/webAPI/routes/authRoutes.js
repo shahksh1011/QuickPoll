@@ -4,7 +4,7 @@ const admin = require('../firebase-admin/admin');
 const FirebaseAuth = require('firebaseauth'); // or import FirebaseAuth from 'firebaseauth';
 const firebase = new FirebaseAuth(process.env.FIREBASE_API_KEY);
 const db = admin.firestore();
-let docRef = db.collection('users');
+let docRef = db.collection('admin-users');
 /* GET users listing. */
 router.post('/login', function (req, res) {
   var email = req.body.email;
@@ -49,6 +49,7 @@ router.post('/register', function (req, res) {
       user.id = result.user.id;
       user.password = null;
       user.displayName = result.user.displayName;
+      user.type = 'presenter';
       let doc = docRef.doc(user.id);
       let userDoc = await doc.set({ user });
       console.log(userDoc);
