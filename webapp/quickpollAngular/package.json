@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@types/googlemaps": "^3.38.1",
     "bootstrap": "^4.4.1",
+    "dotenv": "^8.2.0",
     "jquery": "^3.4.1",
     "popper": "^1.0.1",
     "rxjs": "~6.4.0",

@@ -18,6 +18,7 @@ import {SurveyService} from './service/survey.service';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
 import {ExtendedModule} from '@angular/flex-layout';
+import {environment} from '../environments/environment';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -51,7 +52,7 @@ export class XhrInterceptor implements HttpInterceptor {
     CustomMaterialModule,
     MatGoogleMapsAutocompleteModule.forRoot(),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDJwhoSD6H9pAkEZt2S7PdNePxQw9yUFvk',
+      apiKey: environment.GOOGLE_MAPS_API_KEY,
       libraries: ['places']
     }),
     ExtendedModule
