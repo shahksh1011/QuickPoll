@@ -1,3 +1,4 @@
+const {Firestore} = require('@google-cloud/firestore');
 var express = require('express');
 var router = express.Router();
 const admin = require('../firebase-admin/admin');
@@ -13,7 +14,10 @@ router.post('/create', async function(req, res) {
     var survey = req.body.survey;
     let ref = docRef.doc();
     survey.id = ref.id
-    let surveyDoc = await ref.set({ survey });
+    survey.createdDate = Firestore.Timestamp.now();
+    let date = new Date(survey.expiry);
+    survey.expiry = Firestore.Timestamp.fromDate(date);
+    let surveyDoc = await ref.set(survey);
     res.send(200, {message: 'Success'});
   });
 

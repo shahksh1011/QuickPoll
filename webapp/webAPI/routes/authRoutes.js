@@ -25,7 +25,7 @@ router.post('/login', function (req, res) {
             console.log('No such document!');
           } else {
             console.log('Document data:', doc.data());
-            var user = doc.data().user;
+            var user = doc.data();
             user.token = result.token;
             res.send(200, { user: user });
           }
@@ -51,7 +51,7 @@ router.post('/register', function (req, res) {
       user.displayName = result.user.displayName;
       user.type = 'presenter';
       let doc = docRef.doc(user.id);
-      let userDoc = await doc.set({ user });
+      let userDoc = await doc.set(user);
       console.log(userDoc);
       user.token = result.token;
       res.send(200, { user: user });
