@@ -32,7 +32,7 @@
           </form>
         </div>
       </div>
-      <div class="card m-3" *ngIf="questions.length>0 && !displayCard" style="width: 30rem;">
+      <div class="card m-3" *ngIf="questions.length>0 && !displayCard" style="width: 35rem;">
         <div class="card-body">
           <h5 class="card-title">Survey Details</h5>
           <form [formGroup]="surveyDetailsForm" (ngSubmit)="submitDetails()">
@@ -40,15 +40,34 @@
               <input type="text" matInput placeholder="Enter Survey Name" formControlName="surveyName" required>
             </mat-form-field>
             <mat-form-field>
-              <textarea matInput placeholder="Enter Survey Description" formControlName="surveyDescription" required></textarea>
+              <textarea matInput placeholder="Enter Survey Description" formControlName="surveyDescription"
+                        required></textarea>
             </mat-form-field>
             <mat-form-field>
               <input type="text" matInput placeholder="Time To Complete" formControlName="surveyTime" required>
             </mat-form-field>
             <mat-form-field>
-              <input matInput [matDatepicker]="picker" formControlName="surveyExpiryDate" placeholder="Choose Survey Expiry Date">
+              <input matInput [matDatepicker]="picker" formControlName="surveyExpiryDate"
+                     placeholder="Choose Survey Expiry Date">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div fxFlex>
+              <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+                <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+              </agm-map>
+            </div>
+
+            <div fxFlex fxFlexAlign="center"
+                 class="autocomplete-container"
+                 [ngStyle.xs]="{'min-width.%': 100}"
+                 [ngStyle.sm]="{'width.%': 70}">
+              <mat-google-maps-autocomplete (onAutocompleteSelected)="onAutocompleteSelected($event)"
+                                            (onLocationSelected)="onLocationSelected($event)">
+              </mat-google-maps-autocomplete>
+            </div>
+            <mat-form-field>
+              <input type="number" matInput placeholder="Set survey radius in miles" formControlName="surveyRadius" required>
             </mat-form-field>
             <button type="submit" mat-raised-button class="mat-primary">Create Survey</button>
           </form>

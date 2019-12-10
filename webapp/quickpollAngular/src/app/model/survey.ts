@@ -9,4 +9,7 @@ export class Survey {
   description: string;
   timeToComplete: string;
   questions: Question[];
+  latitude: number;
+  longitude: number;
+  radius: number;
 }

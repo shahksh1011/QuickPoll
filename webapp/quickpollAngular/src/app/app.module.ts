@@ -14,8 +14,10 @@ import {LayoutComponent} from './layout/layout.component';
 import { CreateSurveyComponent } from './create-survey/create-survey.component';
 import { CreatePollComponent } from './create-poll/create-poll.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
-import {MatDatepickerModule} from '@angular/material';
 import {SurveyService} from './service/survey.service';
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+import { AgmCoreModule } from '@agm/core';
+import {ExtendedModule} from '@angular/flex-layout';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -46,7 +48,13 @@ export class XhrInterceptor implements HttpInterceptor {
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    CustomMaterialModule
+    CustomMaterialModule,
+    MatGoogleMapsAutocompleteModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDJwhoSD6H9pAkEZt2S7PdNePxQw9yUFvk',
+      libraries: ['places']
+    }),
+    ExtendedModule
   ],
   providers: [
     AuthenticateService,

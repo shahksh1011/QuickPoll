@@ -8,6 +8,8 @@ import {User} from '../model/user';
 import {AuthenticateService} from '../service/authenticate.service';
 import {SurveyService} from '../service/survey.service';
 import {Router} from '@angular/router';
+import {Location, Appearance} from '@angular-material-extensions/google-maps-autocomplete';
+import PlaceResult = google.maps.places.PlaceResult;
 
 @Component({
   selector: 'app-create-survey',
@@ -47,6 +49,12 @@ export class CreateSurveyComponent implements OnInit {
   survey: Survey;
   user: User;
 
+  public appearance = Appearance;
+  public zoom: number;
+  public latitude: number;
+  public longitude: number;
+  public selectedAddress: PlaceResult;
+
   constructor(private formBuilder: FormBuilder, private authenticateService: AuthenticateService,
               private surveyService: SurveyService, private router: Router) {
     this.surveyQuestionForm = formBuilder.group({
@@ -70,6 +78,12 @@ export class CreateSurveyComponent implements OnInit {
       surveyExpiryDate: ''
     });
     this.survey = new Survey();
+
+    this.zoom = 10;
+    this.latitude = 52.520008;
+    this.longitude = 13.404954;
+
+    this.setCurrentPosition();
   }
 
 
@@ -132,6 +146,9 @@ export class CreateSurveyComponent implements OnInit {
       this.survey.createdBy = this.user.id;
       this.survey.questions = this.questions;
       this.survey.createdDate = new Date();
+      this.survey.latitude = this.latitude;
+      this.survey.longitude = this.longitude;
+      this.survey.radius = this.surveyDetailsForm.controls.surveyRadius.value;
       console.log(this.survey);
       this.surveyService.createSurvey(this.survey).subscribe(
         res => {
@@ -144,4 +161,25 @@ export class CreateSurveyComponent implements OnInit {
       );
     }
   }
+
+  private setCurrentPosition() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 12;
+      });
+    }
+  }
+
+  onAutocompleteSelected(result: PlaceResult) {
+    console.log('onAutocompleteSelected: ', result);
+  }
+
+  onLocationSelected(location: Location) {
+    console.log('onLocationSelected: ', location);
+    this.latitude = location.latitude;
+    this.longitude = location.longitude;
+  }
+
 }
