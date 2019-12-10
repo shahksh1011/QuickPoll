@@ -13,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +52,10 @@ public class SurveyQuestionsFragment extends Fragment {
     private static String active = "Active";
     private EditText inputTextBox;
     List<String> options;
+    LinearLayout checkBoxContainer;
 
     private TextView textBox;
+    private List<Integer> checkBoxAnswer;
 
     private Button nextButton, submitButton;
 
@@ -61,10 +67,11 @@ public class SurveyQuestionsFragment extends Fragment {
         nextButton = view.findViewById(R.id.button_next);
         submitButton = view.findViewById(R.id.button_submit);
         mAuth = FirebaseAuth.getInstance();
-
+        checkBoxContainer = view.findViewById(R.id.checkbox_answer_layout);
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         answer = new HashMap<>();
+        checkBoxAnswer = new ArrayList<>();
         Bundle bundle = getArguments();
         activeMap = new HashMap<>();
 
@@ -137,6 +144,18 @@ public class SurveyQuestionsFragment extends Fragment {
                 if (flag)
                     changeQuestion();
             }
+        }else if (activeView == checkBoxContainer){
+            StringBuilder s = new StringBuilder();
+            String prefix = "";
+            for(int i: checkBoxAnswer) {
+                s.append(prefix);
+                prefix = ", ";
+                s.append(String.valueOf(i));
+            }
+            answer.put(questionText.getText().toString(), s.toString());
+            if (flag)
+                changeQuestion();
+
         }
     }
 
@@ -145,7 +164,9 @@ public class SurveyQuestionsFragment extends Fragment {
         switch (questionType){
             case "Text":
                 activeMap.put(active, inputTextBox);
-
+                checkBoxContainer.removeAllViews();
+                checkBoxContainer.setVisibility(View.INVISIBLE);
+                checkBoxAnswer = new ArrayList<>();
                 radioGroup.setVisibility(View.INVISIBLE);
                 radioGroup.removeAllViews();
                 inputTextBox.setText("");
@@ -153,6 +174,9 @@ public class SurveyQuestionsFragment extends Fragment {
                 break;
             case "Single":
                 inputTextBox.setVisibility(View.INVISIBLE);
+                checkBoxContainer.removeAllViews();
+                checkBoxContainer.setVisibility(View.INVISIBLE);
+                checkBoxAnswer = new ArrayList<>();
                 radioGroup.removeAllViews();
                 radioGroup.setVisibility(View.VISIBLE);
                 options = (List<String>) hashMap.get(String.valueOf(SurveyVariables.options));
@@ -165,7 +189,29 @@ public class SurveyQuestionsFragment extends Fragment {
                 }
                 break;
             case "Multiple":
-
+                inputTextBox.setVisibility(View.INVISIBLE);
+                radioGroup.removeAllViews();
+                radioGroup.setVisibility(View.INVISIBLE);
+                checkBoxContainer.setVisibility(View.VISIBLE);
+                checkBoxAnswer = new ArrayList<>();
+                options = (List<String>) hashMap.get(String.valueOf(SurveyVariables.options));
+                activeMap.put(active, checkBoxContainer);
+                for(int k = 0;k<options.size();k++) {
+                    CheckBox checkBox = new CheckBox(getContext());
+                    checkBox.setId(k);
+                    checkBox.setText(options.get(k));
+                    checkBoxContainer.addView(checkBox);
+                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            if (compoundButton.isChecked()){
+                                checkBoxAnswer.add(compoundButton.getId());
+                            }else{
+                                checkBoxAnswer.remove(compoundButton.getId());
+                            }
+                        }
+                    });
+                }
                 break;
         }
     }
@@ -176,9 +222,5 @@ public class SurveyQuestionsFragment extends Fragment {
         db.collection("surveyAnswers")
                 .document(survey.getSurveyId())
                 .set(userAnswer, SetOptions.merge());
-//        db.collection("surveyAnswers")
-//                .document(survey.getSurveyId())
-//                .get(currentUser.getUid()).set
-
     }
 }
