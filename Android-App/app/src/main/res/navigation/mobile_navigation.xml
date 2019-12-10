@@ -39,7 +39,13 @@
         android:id="@+id/surveyQuestionsFragment"
         android:name="com.example.kshitij.quickpoll.ui.surveyQuestions.SurveyQuestionsFragment"
         android:label="@string/survey_questions"
-        tools:layout="@layout/survey_questions_fragment" />
+        tools:layout="@layout/survey_questions_fragment" >
+        <action
+            android:id="@+id/action_surveyQuestionsFragment_to_nav_surveys"
+            app:destination="@id/nav_surveys"
+            app:popUpTo="@+id/nav_surveys"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 
 </navigation>

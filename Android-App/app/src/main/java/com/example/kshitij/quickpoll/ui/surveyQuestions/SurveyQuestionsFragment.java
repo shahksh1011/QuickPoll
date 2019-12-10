@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +83,12 @@ public class SurveyQuestionsFragment extends Fragment {
         inputTextBox = view.findViewById(R.id.survey_questions_textBoxInput);
         if(i<list.size()){
 
+            if (list.size() == 1){
+                nextButton.setVisibility(View.INVISIBLE);
+                nextButton.setClickable(false);
+                submitButton.setClickable(true);
+                submitButton.setVisibility(View.VISIBLE);
+            }
             Map<String, ?> hashMap = (Map<String, Object>)list.get(i);
             questionText.setText((String) hashMap.get(String.valueOf(SurveyVariables.name)));
             setInputOption(hashMap);
@@ -222,5 +229,11 @@ public class SurveyQuestionsFragment extends Fragment {
         db.collection("surveyAnswers")
                 .document(survey.getSurveyId())
                 .set(userAnswer, SetOptions.merge());
+        Map<String, Boolean> userSurveyMap = new HashMap<>();
+        userSurveyMap.put(survey.getSurveyId(), true);
+        db.collection("surveysComplete")
+                .document(currentUser.getUid())
+                .set(userSurveyMap, SetOptions.merge());
+        Navigation.findNavController(getParentFragment().getView()).navigate(R.id.nav_surveys);
     }
 }
