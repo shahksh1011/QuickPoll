@@ -1,5 +1,7 @@
 package com.example.kshitij.quickpoll.data.model;
 
+import java.util.Date;
+
 public class LoggedInUser {
 
     private String userId;
@@ -7,15 +9,19 @@ public class LoggedInUser {
     private String firstName;
     private String lastName;
     private String email;
+    private String dob;
+    private String gender;
 
     public LoggedInUser(){}
 
-    public LoggedInUser(String userId, String firstName, String lastName, String email) {
+    public LoggedInUser(String userId, String firstName, String lastName, String email, String dob, String gender) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.displayName = firstName+" "+lastName;
+        this.dob = dob;
+        this.gender = gender;
     }
 
     public void setUserId(String userId) {
@@ -31,7 +37,7 @@ public class LoggedInUser {
     }
 
     public String getDisplayName() {
-        return displayName;
+        return firstName+" "+lastName;
     }
 
     public String getFirstName() {
@@ -56,5 +62,21 @@ public class LoggedInUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

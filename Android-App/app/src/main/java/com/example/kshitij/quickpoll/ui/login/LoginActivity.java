@@ -97,9 +97,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "signInWithEmail:success");
                     updateUiWithUser(mAuth.getCurrentUser());
-                    finish();
                 } else {
                     Log.w(TAG, "signInWithEmail:failure", task.getException());
+                    Log.d(TAG, task.getException().getMessage());
                     showLoginFailed(R.string.login_failed);
                 }
             });
@@ -110,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         String welcome = getString(R.string.welcome) + currentUser.getDisplayName();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        finish();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
@@ -138,4 +139,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!=null) {
+            updateUiWithUser(currentUser);
+        }
+    }
 }

@@ -34,7 +34,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_first_name"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:hint="@string/prompt_last_name"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="@+id/register_first_name"
         app:layout_constraintStart_toStartOf="@+id/register_first_name"
@@ -90,6 +90,53 @@
         app:layout_constraintStart_toStartOf="@+id/register_password"
         app:layout_constraintTop_toBottomOf="@+id/register_password" />
 
+    <EditText
+        android:id="@+id/register_dob"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:hint="@string/prompt_dob"
+        android:imeOptions="actionDone"
+        android:inputType="date"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="@+id/register_confirm_password"
+        app:layout_constraintStart_toStartOf="@+id/register_confirm_password"
+        app:layout_constraintTop_toBottomOf="@+id/register_confirm_password" />
+
+    <RadioGroup
+        android:id="@+id/register_genderRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/register_dob"
+        app:layout_constraintStart_toStartOf="@+id/register_dob"
+        app:layout_constraintTop_toBottomOf="@+id/register_dob"
+        android:checkedButton="@+id/register_maleRadioButton">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="@string/prompt_gender"
+            android:textSize="18sp" />
+        <RadioButton
+            android:id="@+id/register_maleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/nav_header_vertical_spacing"
+            android:text="@string/male" />
+
+        <RadioButton
+            android:id="@+id/register_femaleRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/nav_header_vertical_spacing"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:padding="@dimen/nav_header_vertical_spacing"
+            android:text="@string/female"/>
+    </RadioGroup>
+
     <Button
         android:id="@+id/register_btn"
         android:layout_width="0dp"
@@ -97,10 +144,10 @@
         android:layout_gravity="start"
         android:text="@string/action_register"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/register_confirm_password"
+        app:layout_constraintEnd_toEndOf="@+id/register_genderRadioGroup"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/register_confirm_password"
-        app:layout_constraintTop_toBottomOf="@+id/register_confirm_password"
+        app:layout_constraintStart_toStartOf="@+id/register_genderRadioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/register_genderRadioGroup"
         app:layout_constraintVertical_bias="0.05" />
 
     <ProgressBar
@@ -113,6 +160,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<DatePicker
+        android:id="@+id/register_calendar_dob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:datePickerMode="calendar"
+        android:background="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>-->
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

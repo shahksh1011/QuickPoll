@@ -13,12 +13,6 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_logout"
-        android:name="com.example.kshitij.quickpoll.ui.logout.LogoutFragment"
-        android:label="@string/menu_logout"
-        tools:layout="@layout/fragment_logout" />
-
-    <fragment
         android:id="@+id/nav_surveys"
         android:name="com.example.kshitij.quickpoll.ui.survey.SurveyFragment"
         android:label="@string/menu_surveys"
