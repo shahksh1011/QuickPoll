@@ -52,23 +52,26 @@
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-            <div fxFlex>
-              <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-                <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-              </agm-map>
-            </div>
+            <mat-checkbox class="row m-2" (change)="onCheckChange($event)" formControlName="locationFlag">Enable Location</mat-checkbox>
+            <div *ngIf="locationFlag">
+              <div fxFlex>
+                <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+                  <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+                </agm-map>
+              </div>
 
-            <div fxFlex fxFlexAlign="center"
-                 class="autocomplete-container"
-                 [ngStyle.xs]="{'min-width.%': 100}"
-                 [ngStyle.sm]="{'width.%': 70}">
-              <mat-google-maps-autocomplete (onAutocompleteSelected)="onAutocompleteSelected($event)"
-                                            (onLocationSelected)="onLocationSelected($event)">
-              </mat-google-maps-autocomplete>
+              <div fxFlex fxFlexAlign="center"
+                   class="autocomplete-container"
+                   [ngStyle.xs]="{'min-width.%': 100}"
+                   [ngStyle.sm]="{'width.%': 70}">
+                <mat-google-maps-autocomplete (onAutocompleteSelected)="onAutocompleteSelected($event)"
+                                              (onLocationSelected)="onLocationSelected($event)">
+                </mat-google-maps-autocomplete>
+                <mat-form-field>
+                  <input type="number" matInput placeholder="Set survey radius in miles" formControlName="surveyRadius">
+                </mat-form-field>
+              </div>
             </div>
-            <mat-form-field>
-              <input type="number" matInput placeholder="Set survey radius in miles" formControlName="surveyRadius" required>
-            </mat-form-field>
             <button type="submit" mat-raised-button class="mat-primary">Create Survey</button>
           </form>
         </div>

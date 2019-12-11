@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material';
+import {MatCheckboxChange, MatChipInputEvent, MatSnackBar} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Question} from '../model/question';
 import {Survey} from '../model/survey';
@@ -54,9 +54,10 @@ export class CreateSurveyComponent implements OnInit {
   public latitude: number;
   public longitude: number;
   public selectedAddress: PlaceResult;
+  locationFlag: boolean;
 
   constructor(private formBuilder: FormBuilder, private authenticateService: AuthenticateService,
-              private surveyService: SurveyService, private router: Router) {
+              private surveyService: SurveyService, private router: Router, private snackBar: MatSnackBar) {
     this.surveyQuestionForm = formBuilder.group({
       question: formBuilder.control('', Validators.required)
     });
@@ -65,7 +66,8 @@ export class CreateSurveyComponent implements OnInit {
       surveyDescription: formBuilder.control('', Validators.required),
       surveyTime: formBuilder.control('', Validators.required),
       surveyExpiryDate: formBuilder.control('', Validators.required),
-      surveyRadius: formBuilder.control('', Validators.required)
+      surveyRadius: formBuilder.control(''),
+      locationFlag: formBuilder.control(false)
     });
     this.user = authenticateService.currentUserValue();
   }
@@ -77,7 +79,8 @@ export class CreateSurveyComponent implements OnInit {
       surveyDescription: '',
       surveyTime: '',
       surveyExpiryDate: '',
-      surveyRadius: ''
+      surveyRadius: '',
+      locationFlag: false
     });
     this.survey = new Survey();
 
@@ -86,6 +89,7 @@ export class CreateSurveyComponent implements OnInit {
     this.longitude = 13.404954;
 
     this.setCurrentPosition();
+    this.locationFlag = false;
   }
 
 
@@ -125,7 +129,11 @@ export class CreateSurveyComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.surveyQuestionForm.valid) {
+    if (this.options.length < 2 && this.displayCardData.type !== 'Text') {
+      this.snackBar.open('Please select some options', 'Close', {
+        duration: 2000,
+      });
+    } else if (this.surveyQuestionForm.valid) {
       const question = new Question();
       question.name = this.surveyQuestionForm.controls.question.value;
       question.options = this.options;
@@ -148,9 +156,16 @@ export class CreateSurveyComponent implements OnInit {
       this.survey.createdBy = this.user.id;
       this.survey.questions = this.questions;
       this.survey.createdDate = new Date();
-      this.survey.latitude = this.latitude;
-      this.survey.longitude = this.longitude;
-      this.survey.radius = this.surveyDetailsForm.controls.surveyRadius.value;
+      const lFlag = this.surveyDetailsForm.controls.locationFlag.value;
+      if (lFlag) {
+        this.survey.location = {
+          latitude: this.latitude,
+          longitude: this.longitude,
+          radius: this.surveyDetailsForm.controls.surveyRadius.value
+        };
+      } else {
+        this.survey.location = null;
+      }
       console.log(this.survey);
       this.surveyService.createSurvey(this.survey).subscribe(
         res => {
@@ -184,4 +199,7 @@ export class CreateSurveyComponent implements OnInit {
     this.longitude = location.longitude;
   }
 
+  onCheckChange($event: MatCheckboxChange) {
+    this.locationFlag = $event.checked;
+  }
 }

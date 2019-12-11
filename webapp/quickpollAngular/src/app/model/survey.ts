@@ -1,4 +1,5 @@
 import {Question} from './question';
+import {Location} from './location';
 
 export class Survey {
   id: string;
@@ -9,7 +10,5 @@ export class Survey {
   description: string;
   timeToComplete: string;
   questions: Question[];
-  latitude: number;
-  longitude: number;
-  radius: number;
+  location: Location;
 }
