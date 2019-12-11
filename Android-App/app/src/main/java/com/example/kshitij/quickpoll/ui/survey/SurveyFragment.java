@@ -3,8 +3,6 @@ package com.example.kshitij.quickpoll.ui.survey;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -60,10 +58,6 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     HashMap<String, Object> surveyCompletedMap;
-    LocationListener locationListener;
-    Location location;
-
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -117,7 +111,9 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
                                             (List<?>) document.get(String.valueOf(SurveyVariables.questions)),
                                             document.getString(String.valueOf(SurveyVariables.surveyName)),
                                             document.getString(String.valueOf(SurveyVariables.timeToComplete)),
-                                            document.get(String.valueOf(SurveyVariables.location)));
+//                                            document.get(String.valueOf(SurveyVariables.location))
+                                            null
+                                    );
 //                                Survey survey = new Survey(document.getId(),
 //                                        document.getString(String.valueOf(SurveyVariables.createdBy)))
 
@@ -171,12 +167,12 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
         Navigation.findNavController(view).navigate(R.id.surveyDescriptionFragment,bundle);
     }
 
-    private boolean isInLocationRange(double centerLat, double centerLng, double currLat, double currLng, int radius){
-        float[] results = new float[1];
-        Location.distanceBetween(centerLat, centerLng, currLat, currLng, results);
-        float distanceInMeters = results[0];
-        return distanceInMeters<(radius*1000);
-
-    }
+//    private boolean isInLocationRange(double centerLat, double centerLng, double currLat, double currLng, int radius){
+//        float[] results = new float[1];
+//        Location.distanceBetween(centerLat, centerLng, currLat, currLng, results);
+//        float distanceInMeters = results[0];
+//        return distanceInMeters<(radius*1000);
+//
+//    }
 
 }
