@@ -26,6 +26,7 @@
     "@angular/router": "~8.2.8",
     "@ng-bootstrap/ng-bootstrap": "^5.1.4",
     "@types/googlemaps": "^3.38.1",
+    "angular5-csv": "^0.2.11",
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "jquery": "^3.4.1",

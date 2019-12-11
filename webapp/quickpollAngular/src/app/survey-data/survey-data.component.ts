@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Survey} from '../model/survey';
 import {SurveyService} from '../service/survey.service';
+import {Subscription} from 'rxjs';
+import { Angular5Csv } from 'angular5-csv/dist/Angular5-csv';
 
 @Component({
   selector: 'app-survey-data',
@@ -10,21 +12,46 @@ import {SurveyService} from '../service/survey.service';
 })
 export class SurveyDataComponent implements OnInit {
   survey: Survey;
-  data: [];
-  constructor(private router: Router, private surveyService: SurveyService) {
-    this.survey = router.getCurrentNavigation().extras.state.data;
-    this.surveyService.getSurveyResponse(this.survey.id).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.data = res;
-      },
-      error => {
-        console.log(error);
-      }
-    );
+  data: any[] = [];
+  private routeSub: Subscription;
+
+  constructor(private router: Router, private surveyService: SurveyService, private route: ActivatedRoute) {
+
   }
 
   ngOnInit() {
+    this.routeSub = this.route.params.subscribe(params => {
+      if (params && params.hasOwnProperty('id')) {
+        this.surveyService.getSurveyDataById(params.id).subscribe((survey: Survey) => {
+          this.survey = survey;
+          this.surveyService.getSurveyResponse(this.survey.id).subscribe(
+            (res: any) => {
+              console.log(res);
+              // this.data = Array.of(res);
+              // this.data = res;
+              const keys = Object.keys(res);
+              for (const prop of keys) {
+                this.data.push(res[prop]);
+              }
+              console.log(this.data);
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        });
+      }
+    });
+  }
+
+  downloadCSVData() {
+    const keys = Object.keys(this.data[0]);
+    var options = {
+      fieldSeparator: ',',
+      showLabels: true,
+      headers: keys
+    };
+    new Angular5Csv(this.data, 'data', options);
   }
 
 }

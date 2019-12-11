@@ -16,4 +16,8 @@ export class SurveyService {
   getSurveyResponse(surveyId: string) {
     return this.http.post('http://localhost:3000/api/v1/survey/response-data', {surveyId});
   }
+
+  getSurveyDataById(surveyId: string) {
+    return this.http.post('http://localhost:3000/api/v1/survey/get-data', {surveyId});
+  }
 }

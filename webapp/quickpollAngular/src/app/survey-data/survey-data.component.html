@@ -1,1 +1,23 @@
-<p>survey-data works!</p>
+<div class="container-fluid content">
+  <div class="row" *ngIf="survey">
+    <div class="col-md-6">
+      <h5 class="m-3 text-primary">Survey Id: <span class="text-dark">{{survey.id}}</span></h5>
+      <h5 class="m-3 text-primary">Survey Name: <span class="text-dark">{{survey.surveyName}}</span></h5>
+      <h5 class="m-3 text-primary">Survey Description: <span class="text-dark">{{survey.description}}</span></h5>
+      <h5 class="m-3 text-primary">Survey Creation Date: <span class="text-dark">{{survey.createdDate._seconds * 1000 | date}}</span></h5>
+      <h5 class="m-3 text-primary">Survey Expiry Date: <span class="text-dark">{{survey.expiry._seconds * 1000 | date}}</span></h5>
+      <h5 class="m-3 text-primary">Survey Questions</h5>
+      <div class="m-3 row" *ngFor="let ques of survey.questions; let i = index" [attr.data-index]="i">
+        <h5>Question No. {{i + 1}} - {{ques.name}}</h5>
+        <div class="col-md-12">
+          <mat-chip-list>
+            <mat-chip class="mat-primary" *ngFor="let opt of ques.options">{{opt}}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <button mat-raised-button (click)="downloadCSVData()" *ngIf="data.length>0" class="m-3 mat-primary">Download CSV Data</button>
+    </div>
+  </div>
+</div>

@@ -41,7 +41,24 @@ router.post('/response-data', async function (req, res) {
         .catch(err => {
             console.log('Error getting document', err);
         });
-    res.send(200, { message: 'Success' });
+});
+
+router.post('/get-data', async function (req, res) {
+    let surveyId = req.body.surveyId;
+    let surveyRef = docRef.doc(surveyId);
+    let getDoc = surveyRef.get()
+        .then(doc => {
+            if (!doc.exists) {
+                console.log('No such document!');
+            } else {
+                console.log('Document data:', doc.data());
+                var survey = doc.data();
+                res.json(survey);
+            }
+        })
+        .catch(err => {
+            console.log('Error getting document', err);
+        });
 });
 
 module.exports = router;
