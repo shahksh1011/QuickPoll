@@ -34,12 +34,7 @@ public class SurveyDescriptionFragment extends Fragment {
         timeLimitText = view.findViewById(R.id.time_to_complete_editText);
         descriptionText.setText(survey.surveyDescription);
         timeLimitText.setText(survey.timeToComplete);
-        takeSurvey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(getParentFragment().getView()).navigate(R.id.surveyQuestionsFragment, bundle);
-            }
-        });
+        takeSurvey.setOnClickListener(view1 -> Navigation.findNavController(getParentFragment().getView()).navigate(R.id.surveyQuestionsFragment, bundle));
         return view;
     }
 

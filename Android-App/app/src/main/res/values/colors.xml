@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <!--<color name="colorPollBackground">#9FA8DA</color>
+    <color name="colorSurveyBackground">#CE93D8</color>
+    <color name="colorLoginBackground">#80CBC4</color>-->
 </resources>

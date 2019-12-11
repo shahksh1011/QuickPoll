@@ -37,10 +37,17 @@
     <string name="Questions">"Questions"</string>
     <string name="next">"Next"</string>
     <string name="survey_questions">"Survey Questions"</string>
+    <string name="poll_questions">"Poll Questions"</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="prompt_gender">Gender</string>
     <string name="prompt_dob">Date of Birth</string>
+    <string name="poll_number">Enter Room Number</string>
+    <string name="prompt_room_number">Room Number</string>
+    <string name="error_room_number">Room Number cannot be Empty.</string>
+    <string name="submit_button">Submit</string>
+    <string name="scan_code">Scan QR Code</string>
+    <string name="txt_or">OR</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -47,5 +47,12 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+        tools:layout="@layout/survey_questions_fragment" />
+    <fragment
+        android:id="@+id/pollQuestFragment"
+        android:name="com.example.kshitij.quickpoll.ui.poll.PollQuestionFragment"
+        android:label="@string/poll_questions"
+        tools:layout="@layout/fragment_poll_question" >
+    </fragment>
 
 </navigation>

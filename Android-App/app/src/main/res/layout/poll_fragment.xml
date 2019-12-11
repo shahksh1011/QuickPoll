@@ -1,23 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.poll.PollFragment">
 
     <TextView
         android:id="@+id/text_poll"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="32dp"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:text="@string/poll_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/poll_room_id"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="@string/prompt_room_number"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="@+id/text_poll"
+        app:layout_constraintStart_toStartOf="@+id/text_poll"
+        app:layout_constraintTop_toBottomOf="@+id/text_poll" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/poll_open_poll_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginTop="36dp"
+        android:enabled="true"
+        android:text="@string/submit_button"
+        app:layout_constraintEnd_toEndOf="@+id/poll_room_id"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/poll_room_id"
+        app:layout_constraintTop_toBottomOf="@+id/poll_room_id" />
+
+    <TextView
+        android:id="@+id/text_or"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:text="@string/txt_or"
+        app:layout_constraintEnd_toEndOf="@+id/poll_open_poll_btn"
+        app:layout_constraintStart_toStartOf="@+id/poll_open_poll_btn"
+        app:layout_constraintTop_toBottomOf="@+id/poll_open_poll_btn" />
+
+    <Button
+        android:id="@+id/poll_scan_code_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:enabled="true"
+        android:text="@string/scan_code"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/text_or"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/text_or"
+        app:layout_constraintTop_toBottomOf="@+id/text_or"
+        app:layout_constraintVertical_bias="0.123" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
