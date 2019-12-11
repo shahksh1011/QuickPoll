@@ -54,5 +54,11 @@
         android:label="@string/poll_questions"
         tools:layout="@layout/fragment_poll_question" >
     </fragment>
+    <fragment
+        android:id="@+id/pollGraphFragment"
+        android:name="com.example.kshitij.quickpoll.ui.poll.PollGraphFragment"
+        android:label="@string/poll_graph_result"
+        tools:layout="@layout/fragment_poll_graph" >
+    </fragment>
 
 </navigation>

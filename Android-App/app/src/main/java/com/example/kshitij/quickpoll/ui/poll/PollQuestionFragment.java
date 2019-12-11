@@ -98,6 +98,11 @@ public class PollQuestionFragment extends Fragment {
                             Map<String, ?> hashMap = (Map<String, Object>) list.get(i);
                             questionText.setText((String) hashMap.get(String.valueOf(SurveyVariables.name)));
                             setInputOption(hashMap);
+                            if(i == list.size()-1){
+                                nextSubmitButton.setText(R.string.submit_button);
+                            }else{
+                                nextSubmitButton.setText(R.string.next);
+                            }
                         }
                     }else{
                         Log.w(TAG, "Error getting poll documents.", task.getException());
@@ -113,7 +118,7 @@ public class PollQuestionFragment extends Fragment {
         nextSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==list.size()-1){
+                if(i>=list.size()-1){
                     checkAnswer(false);
                     setAnswers(pollObj);
                 }else {
@@ -133,6 +138,8 @@ public class PollQuestionFragment extends Fragment {
         }
         if(i == list.size()-1){
             nextSubmitButton.setText(R.string.submit_button);
+        }else{
+            nextSubmitButton.setText(R.string.next);
         }
 
 
@@ -214,11 +221,21 @@ public class PollQuestionFragment extends Fragment {
         db.collection("pollAnswers")
                 .document(p.getId())
                 .set(userAnswer, SetOptions.merge());
-        Map<String, Map<String, Object> > pollGraphAns = new HashMap<>();
-        /*pollGraphAns.put(p.getId(), response);
-        db.collection("pollGraphAns")
+        /*Map<String, Object> pollGraphQuest = new HashMap<>();
+        Map<String, Object> pollGraphAns = new HashMap<>();
+        Map<String, Map<String, Object> > pollGraph = new HashMap<>();
+        //pollGraph.put(questionText.getText().toString())
+        db.collection("pollGraphAnswers")
                 .document(p.getId())
-                .set(pollGraphAns, SetOptions.merge());*/
+                .set(pollGraph, );*/
+        Map<String, Boolean> pollComplMap = new HashMap<>();
+        pollComplMap.put(p.getId(), true);
+        db.collection("pollComplete").document(currentUser.getUid()).set(pollComplMap, SetOptions.merge());
+        Navigation.findNavController(getParentFragment().getView()).navigate(R.id.nav_polls);
+        /*Bundle bundle = new Bundle();
+        bundle.putSerializable("poll_id", p.getId());
+
+        Navigation.findNavController(getParentFragment().getView()).navigate(R.id.pollGraphFragment, bundle);*/
     }
 
 
