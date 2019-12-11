@@ -143,7 +143,6 @@ public class PollQuestionFragment extends Fragment {
         if (activeView == radioGroup){
             if (radioGroup.getCheckedRadioButtonId() == -1){
                 Toast.makeText(getContext(), "Please Select an Option", Toast.LENGTH_LONG).show();
-
             }else{
                 answer.put(questionText.getText().toString(), radioGroup.getCheckedRadioButtonId());
                 if (flag)
@@ -215,6 +214,11 @@ public class PollQuestionFragment extends Fragment {
         db.collection("pollAnswers")
                 .document(p.getId())
                 .set(userAnswer, SetOptions.merge());
+        Map<String, Map<String, Object> > pollGraphAns = new HashMap<>();
+        /*pollGraphAns.put(p.getId(), response);
+        db.collection("pollGraphAns")
+                .document(p.getId())
+                .set(pollGraphAns, SetOptions.merge());*/
     }
 
 

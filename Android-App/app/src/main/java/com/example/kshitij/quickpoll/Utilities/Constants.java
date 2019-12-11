@@ -9,4 +9,6 @@ public class Constants {
     public static final String UNABLE_SEND = "Unable to Send Email";
     public static final String USER_COLLECTION = "users";
     public static final String SURVEYS_COLLECTION = "surveys";
+    public static final int LOCATION_REQUEST = 1000;
+    public static final int GPS_REQUEST = 1001;
 }
