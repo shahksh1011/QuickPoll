@@ -1,9 +1,14 @@
 package com.example.kshitij.quickpoll;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 
 import com.example.kshitij.quickpoll.ui.login.LoginActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private AppBarConfiguration mAppBarConfiguration;
     private static String TAG = "MainActivity";
     private FirebaseAuth mAuth;
+    private FusedLocationProviderClient mFusedLocationClient;
+    LocationRequest locationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         }
         FirebaseUser user = mAuth.getCurrentUser();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                Log.d("Location", location.getLatitude() + " -- " + location.getLongitude());
+            }
+        });
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

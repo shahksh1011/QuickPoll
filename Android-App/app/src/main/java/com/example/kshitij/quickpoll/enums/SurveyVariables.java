@@ -13,5 +13,6 @@ public enum SurveyVariables {
     surveyName,
     Single,
     Multiple,
-    Text
+    Text,
+    location
 }

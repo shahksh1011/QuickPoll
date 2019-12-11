@@ -9,6 +9,7 @@ public class Survey implements Serializable {
     public String surveyId, createdBy, surveyDescription, surveyName, timeToComplete;
     public Date surveyCreated, surveryExpiry;
     public List<?> questions;
+    public Location location;
 
     public String getSurveyName() {
         return surveyName;
@@ -26,7 +27,7 @@ public class Survey implements Serializable {
         this.timeToComplete = timeToComplete;
     }
 
-    public Survey(String surveyId, String createdBy, String surveyDescription, Date surveyCreated, Date surveryExpiry, List<?> questions, String surveyName, String timeToComplete) {
+    public Survey(String surveyId, String createdBy, String surveyDescription, Date surveyCreated, Date surveryExpiry, List<?> questions, String surveyName, String timeToComplete, Object location) {
         this.surveyId = surveyId;
         this.createdBy = createdBy;
         this.surveyDescription = surveyDescription;
@@ -35,6 +36,7 @@ public class Survey implements Serializable {
         this.questions = questions;
         this.surveyName = surveyName;
         this.timeToComplete = timeToComplete;
+        this.location = (Location) location;
     }
 
     public List<?> getQuestions() {
