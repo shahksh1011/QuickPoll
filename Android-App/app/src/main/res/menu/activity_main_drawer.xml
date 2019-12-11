@@ -5,21 +5,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_profile" />
+            android:id="@+id/nav_surveys"
+            android:icon="@drawable/ic_survey_black_24dp"
+            android:title="@string/menu_surveys" />
+
         <item
             android:id="@+id/nav_polls"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_poll_black_24dp"
             android:title="@string/menu_polls" />
+
         <item
-            android:id="@+id/nav_surveys"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/menu_surveys" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/menu_profile" />
 
     </group>
 
-    <item android:title="Actions">
+    <!--<item android:title="Actions">
         <menu>
 
             <item
@@ -27,6 +29,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="@string/menu_logout" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>
