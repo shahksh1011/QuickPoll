@@ -27,8 +27,6 @@ export class SurveyDataComponent implements OnInit {
           this.surveyService.getSurveyResponse(this.survey.id).subscribe(
             (res: any) => {
               console.log(res);
-              // this.data = Array.of(res);
-              // this.data = res;
               const keys = Object.keys(res);
               for (const prop of keys) {
                 this.data.push(res[prop]);

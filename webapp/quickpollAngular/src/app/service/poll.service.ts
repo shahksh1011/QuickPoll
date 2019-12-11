@@ -14,4 +14,8 @@ export class PollService {
   getPollDataById(pollId: string) {
     return this.http.post('http://localhost:3000/api/v1/poll/get-data', {pollId});
   }
+
+  getPollResponse(pollId: string) {
+    return this.http.post('http://localhost:3000/api/v1/poll/response-data', {pollId});
+  }
 }

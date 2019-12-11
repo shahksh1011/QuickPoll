@@ -17,6 +17,7 @@
     <div class="col-md-6">
       <h5 class="m-3">Poll QR Code</h5>
       <ngx-qrcode qrc-element-type="url" [qrc-value]="poll.id" ></ngx-qrcode>
+      <button mat-raised-button (click)="downloadCSVData()" *ngIf="data.length>0" class="m-3 mat-primary">Download CSV Data</button>
     </div>
   </div>
 </div>
