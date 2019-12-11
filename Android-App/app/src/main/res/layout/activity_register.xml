@@ -17,8 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/user" />
 
     <!--android:layout_marginStart="128dp"
     android:layout_marginTop="16dp"

@@ -154,14 +154,18 @@ public class SurveyQuestionsFragment extends Fragment {
         }else if (activeView == checkBoxContainer){
             StringBuilder s = new StringBuilder();
             String prefix = "";
-            for(int i: checkBoxAnswer) {
-                s.append(prefix);
-                prefix = ", ";
-                s.append(options.get(i));
+            if(checkBoxAnswer.size()>0) {
+                for (int i : checkBoxAnswer) {
+                    s.append(prefix);
+                    prefix = ", ";
+                    s.append(options.get(i));
+                }
+                answer.put(questionText.getText().toString(), s.toString());
+                if (flag)
+                    changeQuestion();
+            }else{
+                Toast.makeText(getContext(), "Please Select your choice", Toast.LENGTH_LONG).show();
             }
-            answer.put(questionText.getText().toString(), s.toString());
-            if (flag)
-                changeQuestion();
 
         }
     }
