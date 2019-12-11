@@ -29,6 +29,7 @@
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "jquery": "^3.4.1",
+    "ngx-qrcode2": "0.0.9",
     "popper": "^1.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

@@ -8,6 +8,8 @@ import {AuthGuard} from './auth.guard';
 import {CreateSurveyComponent} from './create-survey/create-survey.component';
 import {CreatePollComponent} from './create-poll/create-poll.component';
 import {MyProfileComponent} from './my-profile/my-profile.component';
+import {SurveyDataComponent} from './survey-data/survey-data.component';
+import {PollInfoComponent} from './poll-info/poll-info.component';
 
 
 const routes: Routes = [
@@ -19,6 +21,8 @@ const routes: Routes = [
       {path: 'create-survey', component: CreateSurveyComponent, canActivate: [AuthGuard]},
       {path: 'create-poll', component: CreatePollComponent, canActivate: [AuthGuard]},
       {path: 'my-profile', component: MyProfileComponent, canActivate: [AuthGuard]},
+      {path: 'survey/:id', component: SurveyDataComponent, canActivate: [AuthGuard]},
+      {path: 'poll/:id', component: PollInfoComponent, canActivate: [AuthGuard]},
     ]
   },
   {path: 'login', component: LoginComponent},

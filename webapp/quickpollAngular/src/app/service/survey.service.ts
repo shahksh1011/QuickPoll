@@ -12,4 +12,8 @@ export class SurveyService {
   createSurvey(survey: Survey) {
     return this.http.post('http://localhost:3000/api/v1/survey/create', {survey});
   }
+
+  getSurveyResponse(surveyId: string) {
+    return this.http.post('http://localhost:3000/api/v1/survey/response-data', {surveyId});
+  }
 }

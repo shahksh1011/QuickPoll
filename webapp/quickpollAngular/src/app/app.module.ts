@@ -21,6 +21,9 @@ import {ExtendedModule} from '@angular/flex-layout';
 import {environment} from '../environments/environment';
 import {PollService} from './service/poll.service';
 import {UserService} from './service/user.service';
+import { SurveyDataComponent } from './survey-data/survey-data.component';
+import { PollInfoComponent } from './poll-info/poll-info.component';
+import {NgxQRCodeModule} from 'ngx-qrcode2';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -43,6 +46,8 @@ export class XhrInterceptor implements HttpInterceptor {
     CreateSurveyComponent,
     CreatePollComponent,
     MyProfileComponent,
+    SurveyDataComponent,
+    PollInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +57,7 @@ export class XhrInterceptor implements HttpInterceptor {
     FormsModule,
     ReactiveFormsModule,
     CustomMaterialModule,
+    NgxQRCodeModule,
     MatGoogleMapsAutocompleteModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: environment.GOOGLE_MAPS_API_KEY,

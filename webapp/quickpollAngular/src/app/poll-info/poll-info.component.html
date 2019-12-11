@@ -1,0 +1,22 @@
+<div class="container-fluid content">
+  <div class="row" *ngIf="poll">
+    <div class="col-md-6">
+      <h5 class="m-3 text-primary">Poll Id: <span class="text-dark">{{poll.id}}</span></h5>
+      <h5 class="m-3 text-primary">Poll Name: <span class="text-dark">{{poll.pollName}}</span></h5>
+      <h5 class="m-3 text-primary">Poll Description: <span class="text-dark">{{poll.description}}</span></h5>
+      <h5 class="m-3 text-primary">Poll Questions</h5>
+      <div class="m-3 row" *ngFor="let ques of poll.questions; let i = index" [attr.data-index]="i">
+        <h5>Question No. {{i + 1}} - {{ques.name}}</h5><button mat-raised-button class="mat-primary mx-3">Display</button>
+        <div class="col-md-12">
+          <mat-chip-list>
+            <mat-chip class="mat-primary" *ngFor="let opt of ques.options">{{opt}}</mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h5 class="m-3">Poll QR Code</h5>
+      <ngx-qrcode qrc-element-type="url" [qrc-value]="poll.id" ></ngx-qrcode>
+    </div>
+  </div>
+</div>

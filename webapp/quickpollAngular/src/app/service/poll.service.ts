@@ -10,4 +10,8 @@ export class PollService {
   createPoll(poll: Poll) {
     return this.http.post('http://localhost:3000/api/v1/poll/create', {poll});
   }
+
+  getPollDataById(pollId: string) {
+    return this.http.post('http://localhost:3000/api/v1/poll/get-data', {pollId});
+  }
 }
