@@ -16,6 +16,10 @@ router.post('/create', async function(req, res) {
     poll.id = ref.id
     poll.createdDate = Firestore.Timestamp.now();
     let pollDoc = await ref.set(poll);
+    let userRef = db.collection('admin-users').doc(survey.createdBy);
+    userRef.update({
+        myPolls: admin.firestore.FieldValue.arrayUnion(poll.id)
+    });
     res.send(200, {message: 'Success'});
   });
 

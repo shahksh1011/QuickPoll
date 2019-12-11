@@ -18,6 +18,10 @@ router.post('/create', async function(req, res) {
     let date = new Date(survey.expiry);
     survey.expiry = Firestore.Timestamp.fromDate(date);
     let surveyDoc = await ref.set(survey);
+    let userRef = db.collection('admin-users').doc(survey.createdBy);
+    userRef.update({
+        mySurveys: admin.firestore.FieldValue.arrayUnion(survey)
+    });
     res.send(200, {message: 'Success'});
   });
 

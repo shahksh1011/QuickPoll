@@ -1,3 +1,6 @@
+import {Poll} from './poll';
+import {Survey} from './survey';
+
 export class User {
   id: string;
   email: string;
@@ -7,4 +10,6 @@ export class User {
   active: bigint;
   phoneNumber: string;
   token?: string;
+  myPolls: [Poll];
+  mySurveys: [Survey];
 }

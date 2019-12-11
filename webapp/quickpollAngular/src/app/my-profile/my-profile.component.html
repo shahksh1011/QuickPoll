@@ -1,1 +1,64 @@
-<p>my-profile works!</p>
+<div class="container-fluid content">
+  <div class="row" *ngIf="user">
+    <div class="col-md-12">
+      <h5 class="m-3">First Name: <span class="text-primary">{{user.firstName}}</span></h5>
+      <h5 class="m-3">Last Name: <span class="text-primary">{{user.lastName}}</span></h5>
+      <h5 class="m-3">Email Id: <span class="text-primary">{{user.email}}</span></h5>
+      <h5 class="m-3">Phone Number: <span class="text-primary">{{user.phoneNumber}}</span></h5>
+      <div *ngIf="user.mySurveys && user.mySurveys.length>0">
+        <h5 class="m-3 text-primary">My Created Survey</h5>
+        <table mat-table [dataSource]="user.mySurveys" class="mat-elevation-z8 w-100">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Survey Id</th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Survey Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.surveyName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Survey Description</th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+          <ng-container matColumnDef="timeToComplete">
+            <th mat-header-cell *matHeaderCellDef>Time to complete</th>
+            <td mat-cell *matCellDef="let element"> {{element.timeToComplete}} </td>
+          </ng-container>
+          <ng-container matColumnDef="expiryDate">
+            <th mat-header-cell *matHeaderCellDef>Expiry Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.expiry._seconds * 1000 | date}} </td>
+          </ng-container>
+          <ng-container matColumnDef="createdDate">
+            <th mat-header-cell *matHeaderCellDef>Created Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.createdDate._seconds * 1000 | date}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsSurvey"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsSurvey;"></tr>
+        </table>
+      </div>
+      <div *ngIf="user.myPolls && user.myPolls.length>0">
+        <h5 class="m-3 text-primary">My Created Polls</h5>
+        <table mat-table [dataSource]="user.myPolls" class="mat-elevation-z8 w-100">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Poll Id</th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Poll Name</th>
+            <td mat-cell *matCellDef="let element"> {{element.pollName}} </td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Poll Description</th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+          <ng-container matColumnDef="createdDate">
+            <th mat-header-cell *matHeaderCellDef>Created Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.createdDate._seconds * 1000 | date}} </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsPoll"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsPoll;"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
