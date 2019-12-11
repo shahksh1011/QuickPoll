@@ -56,6 +56,7 @@ import com.google.type.LatLng;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -76,6 +77,8 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
 
+    private double longitude, latitude;
+    private boolean isGPS = false;
     @SuppressLint("MissingPermission")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -133,7 +136,11 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
                         if (task.isSuccessful()) {
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Location centerLocation;
+                                    if (document.get(String.valueOf(SurveyVariables.location))!=null){
+//                                        HashMap<String, String> h = document.getDocumentReference("location").get();
 
+                                    }
                                     Survey survey = new Survey(document.getId(),
                                             document.getString(String.valueOf(SurveyVariables.createdBy)),
                                             document.getString(String.valueOf(SurveyVariables.description)),
@@ -143,21 +150,31 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
                                             document.getString(String.valueOf(SurveyVariables.surveyName)),
                                             document.getString(String.valueOf(SurveyVariables.timeToComplete)),
 //                                            document.get(String.valueOf(SurveyVariables.location))
-                                            null
+                                            document.get(String.valueOf(SurveyVariables.location))
                                     );
 //                                Survey survey = new Survey(document.getId(),
 //                                        document.getString(String.valueOf(SurveyVariables.createdBy)))
 
-                                if (!surveyCompletedMap.containsKey(survey.getSurveyId()))
+                                if (survey.location == null){
+                                    if (!surveyCompletedMap.containsKey(survey.getSurveyId()))
                                         list.add(survey);
-                                if (survey.location!=null){
-//                                    if(isInLocationRange(survey.location.getLatitude(), survey.location.getLongitude(), currLat, currLong, survey.location.getRadius()))
-//                                        locationBasedSurvey.add(survey);
+                                }else{
+                                    if (!surveyCompletedMap.containsKey(survey.getSurveyId())){
+                                        Map<String, ?> l= (Map<String, ?>) survey.location;
+                                        if (isInLocationRange(
+                                                l.get(String.valueOf(SurveyVariables.latitude)),
+                                                l.get(String.valueOf(SurveyVariables.longitude)),
+                                                latitude,
+                                                longitude,
+                                                l.get(String.valueOf(SurveyVariables.radius)))) {
+                                            locationBasedSurvey.add(survey);
+                                        }
+                                    }
+//                                        if(isInLocationRange(survey.location.getLatitude()))
                                 }
-
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + document.getData());
                             }
-                            Log.d(TAG, "List Size" + list.size());
+                            Log.d(TAG, "List Size" + list.size() + " -> " + locationBasedSurvey.size());
                             if (list.size() < 1)
                                 Toast.makeText(getContext(), "No more surveys available", Toast.LENGTH_LONG).show();
 
@@ -184,8 +201,14 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
         CharSequence title = item.getTitle();
         if (getResources().getString(R.string.menu_location_specific_surveys).equals(title)) {
             Toast.makeText(getContext(), "Location", Toast.LENGTH_LONG).show();
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            surveyAdapter = new SurveyAdapter(getContext(), locationBasedSurvey, SurveyFragment.this, getView());
+            recyclerView.setAdapter(surveyAdapter);
         } else if (getResources().getString(R.string.menu_all_surveys).equals(title)) {
             Toast.makeText(getContext(), "All", Toast.LENGTH_LONG).show();
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            surveyAdapter = new SurveyAdapter(getContext(), list, SurveyFragment.this, getView());
+            recyclerView.setAdapter(surveyAdapter);
         }
         return true;
 
@@ -198,17 +221,16 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
         Navigation.findNavController(view).navigate(R.id.surveyDescriptionFragment,bundle);
     }
 
-//    private boolean isInLocationRange(double centerLat, double centerLng, double currLat, double currLng, int radius){
-//        float[] results = new float[1];
-//        Location.distanceBetween(centerLat, centerLng, currLat, currLng, results);
-//        float distanceInMeters = results[0];
-//        return distanceInMeters<(radius*1000);
-//
-//    }
+    private boolean isInLocationRange(Object centerLat, Object centerLng, double currLat, double currLng, Object radius){
+        float[] results = new float[1];
+        Location.distanceBetween((double)centerLat, (double)centerLng, currLat, currLng, results);
+        float distanceInMeters = results[0];
+        return distanceInMeters<((Long)radius*1000);
+
+    }
 
 
-    private double longitude, latitude;
-    private boolean isGPS = false;
+
     public void getUserLocation(){
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();

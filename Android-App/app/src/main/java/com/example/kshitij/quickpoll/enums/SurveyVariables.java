@@ -14,5 +14,8 @@ public enum SurveyVariables {
     Single,
     Multiple,
     Text,
-    location
+    location,
+    latitude,
+    longitude,
+    radius
 }

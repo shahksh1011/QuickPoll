@@ -147,7 +147,7 @@ public class SurveyQuestionsFragment extends Fragment {
                 Toast.makeText(getContext(), "Please Select an Option", Toast.LENGTH_LONG).show();
 
             }else{
-                answer.put(questionText.getText().toString(), radioGroup.getCheckedRadioButtonId());
+                answer.put(questionText.getText().toString(), options.get(radioGroup.getCheckedRadioButtonId()));
                 if (flag)
                     changeQuestion();
             }
@@ -157,7 +157,7 @@ public class SurveyQuestionsFragment extends Fragment {
             for(int i: checkBoxAnswer) {
                 s.append(prefix);
                 prefix = ", ";
-                s.append(String.valueOf(i));
+                s.append(options.get(i));
             }
             answer.put(questionText.getText().toString(), s.toString());
             if (flag)
