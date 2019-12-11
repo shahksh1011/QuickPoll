@@ -54,6 +54,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.type.LatLng;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,10 +155,11 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
                                     );
 //                                Survey survey = new Survey(document.getId(),
 //                                        document.getString(String.valueOf(SurveyVariables.createdBy)))
-
+                                Log.d("Expiry", String.valueOf(document.getDate(String.valueOf(SurveyVariables.expiry))));
                                 if (survey.location == null){
                                     if (!surveyCompletedMap.containsKey(survey.getSurveyId()))
-                                        list.add(survey);
+                                        if (survey.getSurveryExpiry().compareTo(new Date())>0)
+                                            list.add(survey);
                                 }else{
                                     if (!surveyCompletedMap.containsKey(survey.getSurveyId())){
                                         Map<String, ?> l= (Map<String, ?>) survey.location;
@@ -167,7 +169,8 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
                                                 latitude,
                                                 longitude,
                                                 l.get(String.valueOf(SurveyVariables.radius)))) {
-                                            locationBasedSurvey.add(survey);
+                                            if (survey.getSurveryExpiry().compareTo(new Date())>0)
+                                                locationBasedSurvey.add(survey);
                                         }
                                     }
 //                                        if(isInLocationRange(survey.location.getLatitude()))
@@ -200,12 +203,12 @@ public class SurveyFragment extends Fragment implements SurveyAdapter.SurveyFrag
 //        Toast.makeText(getContext(), item.getTitle(), Toast.LENGTH_LONG).show();
         CharSequence title = item.getTitle();
         if (getResources().getString(R.string.menu_location_specific_surveys).equals(title)) {
-            Toast.makeText(getContext(), "Location", Toast.LENGTH_LONG).show();
+
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             surveyAdapter = new SurveyAdapter(getContext(), locationBasedSurvey, SurveyFragment.this, getView());
             recyclerView.setAdapter(surveyAdapter);
         } else if (getResources().getString(R.string.menu_all_surveys).equals(title)) {
-            Toast.makeText(getContext(), "All", Toast.LENGTH_LONG).show();
+
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             surveyAdapter = new SurveyAdapter(getContext(), list, SurveyFragment.this, getView());
             recyclerView.setAdapter(surveyAdapter);
