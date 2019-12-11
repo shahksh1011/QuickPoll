@@ -64,7 +64,8 @@ export class CreateSurveyComponent implements OnInit {
       surveyName: formBuilder.control('', Validators.required),
       surveyDescription: formBuilder.control('', Validators.required),
       surveyTime: formBuilder.control('', Validators.required),
-      surveyExpiryDate: formBuilder.control('', Validators.required)
+      surveyExpiryDate: formBuilder.control('', Validators.required),
+      surveyRadius: formBuilder.control('', Validators.required)
     });
     this.user = authenticateService.currentUserValue();
   }
@@ -75,7 +76,8 @@ export class CreateSurveyComponent implements OnInit {
       surveyName: '',
       surveyDescription: '',
       surveyTime: '',
-      surveyExpiryDate: ''
+      surveyExpiryDate: '',
+      surveyRadius: ''
     });
     this.survey = new Survey();
 

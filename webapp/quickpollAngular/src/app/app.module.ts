@@ -19,6 +19,7 @@ import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/go
 import { AgmCoreModule } from '@agm/core';
 import {ExtendedModule} from '@angular/flex-layout';
 import {environment} from '../environments/environment';
+import {PollService} from './service/poll.service';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -60,6 +61,7 @@ export class XhrInterceptor implements HttpInterceptor {
   providers: [
     AuthenticateService,
     SurveyService,
+    PollService,
     { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

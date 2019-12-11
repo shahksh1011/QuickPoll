@@ -7,6 +7,7 @@ dotenv.config();
 const users = require('./routes/userRoutes');
 const auth = require('./routes/authRoutes');
 const survey = require('./routes/surveyRoutes');
+const poll = require('./routes/pollRoutes');
 const admin = require('./firebase-admin/admin');
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(function(req, res, next) {
 
 app.use('/api/v1/users', users);
 app.use('/auth',auth);
-app.use('/api/v1/survey', survey)
+app.use('/api/v1/survey', survey);
+app.use('/api/v1/poll', poll)
 
 module.exports = app;
