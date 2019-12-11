@@ -3,7 +3,10 @@
     android:id="@+id/survey_item_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginTop="15dp"
+    android:background="@drawable/list_border"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/survey_name"
