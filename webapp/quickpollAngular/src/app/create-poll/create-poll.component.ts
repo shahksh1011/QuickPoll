@@ -7,7 +7,7 @@ import {Poll} from '../model/poll';
 import {AuthenticateService} from '../service/authenticate.service';
 import {Router} from '@angular/router';
 import {PollService} from '../service/poll.service';
-import {MatChipInputEvent} from '@angular/material';
+import {MatChipInputEvent, MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-create-poll',
@@ -43,7 +43,7 @@ export class CreatePollComponent implements OnInit {
   user: User;
 
   constructor(private formBuilder: FormBuilder, private authenticateService: AuthenticateService,
-              private pollService: PollService, private router: Router) {
+              private pollService: PollService, private router: Router, private snackBar: MatSnackBar) {
     this.pollQuestionForm = formBuilder.group({
       question: formBuilder.control('', Validators.required)
     });
@@ -96,7 +96,11 @@ export class CreatePollComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.pollQuestionForm.valid) {
+    if (this.options.length < 2 && this.displayCardData.type !== 'Text') {
+      this.snackBar.open('Please select some options', 'Close', {
+        duration: 2000,
+      });
+    } else if (this.pollQuestionForm.valid) {
       const question = new Question();
       question.name = this.pollQuestionForm.controls.question.value;
       question.options = this.options;
